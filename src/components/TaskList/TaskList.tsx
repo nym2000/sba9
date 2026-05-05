@@ -8,7 +8,7 @@ interface TaskListProps {
 
 function TaskList({ tasks, onStatusChange }: TaskListProps) {
   if (tasks.length === 0) {
-    return <p>No tasks yet.</p>;
+    return <p style={{ color: 'gray', textAlign: 'center' }}>No tasks yet.</p>;
   }
 
   return (
