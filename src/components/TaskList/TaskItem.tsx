@@ -2,6 +2,7 @@ import type { Task } from '../../types';
 
 interface TaskItemProps {
   task: Task;
+  onDelete: (id: number) => void;
   onStatusChange: (id: number, status: Task['status']) => void;
 }
 
@@ -11,7 +12,7 @@ const priorityColors: Record<Task['priority'], string> = {
   low: 'steelblue',
 };
 
-function TaskItem({ task, onStatusChange }: TaskItemProps) {
+function TaskItem({ task, onDelete, onStatusChange }: TaskItemProps) {
   return (
     <div style={{
       border: '1px solid lightgray',
@@ -38,15 +39,31 @@ function TaskItem({ task, onStatusChange }: TaskItemProps) {
         </p>
       )}
 
-      <select
-        value={task.status}
-        onChange={(e) => onStatusChange(task.id, e.target.value as Task['status'])}
-        style={{ marginTop: '8px', padding: '4px', borderRadius: '4px', border: '1px solid lightgray' }}
-      >
-        <option value="todo">To Do</option>
-        <option value="in-progress">In Progress</option>
-        <option value="done">Done</option>
-      </select>
+      <div style={{ display: 'flex', gap: '8px', marginTop: '10px', alignItems: 'center' }}>
+        <select
+          value={task.status}
+          onChange={(e) => onStatusChange(task.id, e.target.value as Task['status'])}
+          style={{ padding: '4px', borderRadius: '4px', border: '1px solid lightgray' }}
+        >
+          <option value="todo">To Do</option>
+          <option value="in-progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+
+        <button
+          onClick={() => onDelete(task.id)}
+          style={{
+            padding: '4px 10px',
+            backgroundColor: 'crimson',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 }
