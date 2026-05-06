@@ -9,23 +9,28 @@ function TaskForm({ onAdd }: TaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Task['priority']>('medium');
+  const [status, setStatus] = useState<Task['status']>('todo');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!title.trim()) {
       setError('Title is required.');
+      setSuccessMessage('');
       return;
     }
 
-    onAdd({ title: title.trim(), description: description.trim(), priority, status: 'todo' });
+    onAdd({ title: title.trim(), description: description.trim(), priority, status });
 
     // Reset
     setTitle('');
     setDescription('');
     setPriority('medium');
+    setStatus('todo');
     setError('');
+    setSuccessMessage('Task added!');
   };
 
   return (
@@ -34,7 +39,6 @@ function TaskForm({ onAdd }: TaskFormProps) {
       borderRadius: '6px',
       padding: '16px',
       marginBottom: '24px',
-      backgroundColor: 'whitesmoke',
     }}>
       <h2 style={{ marginTop: 0 }}>Add Task</h2>
 
@@ -64,33 +68,55 @@ function TaskForm({ onAdd }: TaskFormProps) {
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="priority" style={{ display: 'block', marginBottom: '4px' }}>Priority</label>
-          <select
-            id="priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value as Task['priority'])}
-            style={{ padding: '6px', borderRadius: '4px', border: '1px solid lightgray' }}
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
+        <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <div>
+            <label htmlFor="priority" style={{ display: 'block', marginBottom: '4px' }}>Priority</label>
+            <select
+              id="priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value as Task['priority'])}
+              style={{ padding: '6px', borderRadius: '4px', border: '1px solid lightgray' }}
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="status" style={{ display: 'block', marginBottom: '4px' }}>Status</label>
+            <select
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value as Task['status'])}
+              style={{ padding: '6px', borderRadius: '4px', border: '1px solid lightgray' }}
+            >
+              <option value="todo">To Do</option>
+              <option value="in-progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          style={{
-            padding: '8px 20px',
-            backgroundColor: 'steelblue',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          Add Task
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            type="submit"
+            style={{
+              padding: '8px 20px',
+              backgroundColor: 'steelblue',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            Add Task
+          </button>
+
+          {successMessage && (
+            <p style={{ margin: 0, color: 'green', fontSize: '14px' }}>{successMessage}</p>
+          )}
+        </div>
       </form>
     </div>
   );

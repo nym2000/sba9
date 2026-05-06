@@ -9,5 +9,4 @@ export interface Task {
 export interface FilterOptions {
   status: string;
   priority: string;
-  search: string;
 }
